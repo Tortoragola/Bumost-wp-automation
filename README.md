@@ -36,55 +36,50 @@ Yüklenen paketler:
 - `pywhatkit` - WhatsApp Web otomasyonu
 - `pyautogui` - Klavye/mouse kontrolü
 - `Pillow` - Görüntü işleme
+- `selenium` - Tarayıcı otomasyonu (grup üye çıkarma için)
+- `webdriver-manager` - Chrome driver yönetimi
 
 ### 3. `group_members.json` dosyası oluşturun
 
-**Seçenek A: Otomatik Oluştur (Önerilen) 🚀**
+**Seçenek A: Otomatik Çıkar - WhatsApp Web'den (ÖNERİLEN) 🚀**
 
-İnteraktif yardımcı scripti çalıştırın:
-
-```bash
-python group_extractor.py
-```
-
-Script sizden:
-1. Grup adını soracak
-2. Her üye için isim ve telefon numarası isteyecek
-3. Otomatik olarak `group_members.json` dosyasını oluşturacak
-
-**Seçenek B: Manuel Oluştur**
-
-`group_members.example.json` dosyasını `group_members.json` olarak kopyalayın:
+Selenium ile WhatsApp Web'den otomatik üye çıkarma:
 
 ```bash
-cp group_members.example.json group_members.json
+python3 group_extractor.py
+# Seçenek 1'i seçin: "Otomatik çıkar (WhatsApp Web'den)"
 ```
 
-Ardından `group_members.json` dosyasını düzenleyin ve grup üyelerinizi ekleyin:
+Script şunları yapacak:
+1. Chrome tarayıcısını açar
+2. WhatsApp Web'e gider
+3. QR kod okutmanızı bekler (ilk seferde)
+4. **Siz grubu açarsınız**
+5. Grup bilgilerine gidip tüm üyeleri otomatik çıkarır
+6. `group_members.json` dosyasını oluşturur
 
-```json
-{
-  "group_name": "Üniversite Topluluğu WhatsApp Grubu",
-  "members": [
-    {
-      "name": "Ahmet Yılmaz",
-      "phone": "905551234567"
-    },
-    {
-      "name": "Ayşe Demir",
-      "phone": "905559876543"
-    }
-  ]
-}
+**Avantajları:**
+- ✅ Yüzlerce üyeyi otomatik çıkarır
+- ✅ İsim bilgilerini otomatik alır
+- ✅ Mümkünse telefon numaralarını da alır
+- ✅ 5 dakikada 200+ üye
+
+**⚠️ Not:** Bazı üyelerin telefon numaraları gizli olabilir. Bu durumda sadece isimler alınır ve bu üyelere mesaj gönderemezsiniz.
+
+**Seçenek B: Manuel Gir**
+
+```bash
+python3 group_extractor.py
+# Seçenek 2'yi seçin: "Manuel gir"
 ```
 
-**Önemli:** Telefon numaraları uluslararası formatta olmalı:
+Her üye için elle isim ve telefon girersiniz (küçük gruplar için).
+
+**Telefon Numarası Formatı:**
 - Türkiye için: `90` + telefon numarası (başında + olmadan)
 - Örnek: `905551234567` ✅
 - Yanlış: `+905551234567` ❌
 - Yanlış: `05551234567` ❌
-
-**İpucu:** `group_extractor.py` otomatik olarak telefon numaralarını temizler ve ülke kodunu ekler!
 
 ## ⚙️ WhatsApp Web Hazırlığı
 
@@ -104,55 +99,84 @@ Ardından `group_members.json` dosyasını düzenleyin ve grup üyelerinizi ekle
 ### Hızlı Başlangıç (3 Adım)
 
 ```bash
-# 1. Grup üyelerini ekle
-python group_extractor.py
+# 1. Grup üyelerini WhatsApp Web'den otomatik çıkar
+python3 group_extractor.py
 
-# 2. WhatsApp Web'de oturum aç
-# web.whatsapp.com adresine gidin ve QR kod okutun
+# 2. WhatsApp Web'de oturum açın (script açacak)
+# QR kod okutun, grubu açın, Enter'a basın
 
 # 3. Mesaj gönder
-python main.py
+python3 main.py
 ```
 
 ### Detaylı Kullanım
 
-#### Adım 1: Grup Üyelerini Ekle
+#### Adım 1: Grup Üyelerini Otomatik Çıkar
 
 ```bash
-python group_extractor.py
+python3 group_extractor.py
 ```
 
-Script çalışınca:
-- Grup adını girin
-- Her üye için ad ve telefon girin
-- Bitirmek için 'q' yazın
-- Otomatik olarak `group_members.json` oluşturulur
+**İnteraksiyon:**
 
-**Örnek İnteraksiyon:**
+1. **Seçim yapın:** "1" - Otomatik çıkar
+2. **Chrome açılacak** - WhatsApp Web'e gidecek
+3. **QR kod okutun** (ilk seferde)
+4. **Grubu açın** - İstediğiniz WhatsApp grubuna girin
+5. **Terminale dönün** - Enter'a basın
+6. **Bekleyin** - Script otomatik olarak:
+   - Grup başlığına tıklar
+   - Tüm üyeleri yüklemek için kaydırma yapar
+   - Her üyenin ismini ve telefon numarasını çıkarır
+   - `group_members.json` dosyasını oluşturur
+
+**Örnek Çıktı:**
 ```
 ============================================================
-   WhatsApp Grup Üyeleri Dosyası Oluşturucu
+   WhatsApp Grup Üyeleri Otomatik Çıkarıcı
 ============================================================
 
-📝 Grup bilgileri:
-────────────────────────────────────────────────────────────
-Grup adı: Bumost Topluluğu
+🌐 Tarayıcı başlatılıyor...
 
 ────────────────────────────────────────────────────────────
-👥 Üye ekleme (bitirmek için üye adı yerine 'q' yazın)
+⚠️  ÖNEMLİ:
+   1. QR kodu telefonunuzla okutun (ilk seferde)
+   2. WhatsApp Web açıldıktan sonra istediğiniz GRUBU açın
+   3. Grup sohbetini açtıktan sonra terminale dönün
 ────────────────────────────────────────────────────────────
 
-1. Üye:
-  İsim: Ahmet
-  Telefon (90XXXXXXXXXX): 5551234567
-  ℹ️  Ülke kodu eklendi: 905551234567
-  ✅ Ahmet eklendi!
+Grubu açtıktan sonra Enter'a basın...
 
-2. Üye:
-  İsim: q
+🔍 Grup bilgileri alınıyor...
+✅ Grup başlığına tıklandı
+📊 Grup: BÜMOST Topluluğu
+
+📜 Üyeler yükleniyor (kaydırma yapılıyor)...
+   📍 Kaydırma 5/50...
+   📍 Kaydırma 10/50...
+✅ Tüm üyeler yüklendi (scroll sayısı: 12)
+
+👥 Üye bilgileri çıkarılıyor...
+🔍 156 üye elementi bulundu, işleniyor...
+
+1. ✅ Ahmet Yılmaz (905551234567)
+2. ✅ Ayşe Demir (telefon numarası gizli)
+3. ✅ Mehmet Kaya (905559876543)
+...
+156. ✅ Zeynep Aksoy (905557778899)
 
 ────────────────────────────────────────────────────────────
 ✅ group_members.json dosyası başarıyla oluşturuldu!
+────────────────────────────────────────────────────────────
+📊 Grup: BÜMOST Topluluğu
+👥 Toplam üye: 156
+   📱 Telefon numaralı: 89
+   🔒 Telefon numarası gizli: 67
+
+⚠️  NOT: Bazı üyelerin telefon numaraları gizli.
+   Bu üyelere mesaj gönderilemeyecek.
+
+🚀 Artık 'python main.py' komutuyla mesaj gönderebilirsiniz!
 ```
 
 #### Adım 2: Mesaj Gönder

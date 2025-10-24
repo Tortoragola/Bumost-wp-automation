@@ -17,10 +17,11 @@ class WhatsAppBulkSender:
     
     def __init__(self):
         """Initialize the sender"""
-        self.delay_between_messages = 30  # Saniye cinsinden mesajlar arası bekleme
+        self.delay_between_messages = 10  # Saniye cinsinden mesajlar arası bekleme
         print("📱 WhatsApp Web kullanılarak mesajlar gönderilecek.")
         print("⚠️  Not: İlk mesaj gönderilirken WhatsApp Web tarayıcıda açılacak.")
-        print("⚠️  Not: Bilgisayarınızın başında olmanız gerekiyor.\n")
+        print("⚠️  Not: Bilgisayarınızın başında olmanız gerekiyor.")
+        print("⚠️  Not: Her mesajdan sonra sekme kapanacak, sonra yeni sekme açılacak.\n")
     
     def get_group_members(self, group_file: str = 'group_members.json') -> List[Dict[str, str]]:
         """
@@ -81,6 +82,10 @@ class WhatsAppBulkSender:
                 tab_close=True,
                 close_time=3
             )
+            
+            # Extra wait to ensure tab is fully closed before next message
+            time.sleep(2)  # Sekmenin tamamen kapanmasını bekle
+            
             return True
             
         except Exception as e:
